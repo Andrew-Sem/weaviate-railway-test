@@ -11,17 +11,30 @@ export class WeaviateService {
 
   private async getWeaviateClient() {
     if (!this._weaviateClient) {
-      this._weaviateClient = await weaviate.connectToLocal({
-        httpHost: process.env.WEAVIATE_HOST,
-        httpPort: 8080,
-        httpSecure: false,
-        grpcHost: process.env.WEAVIATE_HOST,
-        grpcPort: 50051,
-        grpcSecure: false,
-        headers: {
-          "X-OpenAI-Api-Key": process.env.OPENAI_API_KEY ?? "",
-        },
-      });
+      // self-hosted in production and WCS in development
+      if (process.env.NODE_ENV === "production") {
+        this._weaviateClient = await weaviate.connectToLocal({
+          httpHost: process.env.WEAVIATE_HOST,
+          httpPort: 8080,
+          httpSecure: false,
+          grpcHost: process.env.WEAVIATE_HOST,
+          grpcPort: 50051,
+          grpcSecure: false,
+          headers: {
+            "X-OpenAI-Api-Key": process.env.OPENAI_API_KEY ?? "",
+          },
+        });
+      } else {
+        this._weaviateClient = await weaviate.connectToWCS(
+          process.env.WEAVIATE_HOST ?? "",
+          {
+            authCredentials: new weaviate.ApiKey("api key"),
+            headers: {
+              "X-OpenAI-Api-Key": process.env.OPENAI_API_KEY ?? "",
+            },
+          }
+        );
+      }
     }
     return this._weaviateClient;
   }
