@@ -25,6 +25,8 @@ app.get("/", async (req, res) => {
   res.send("I'm alive");
 });
 
-app.listen(port, () => {
+app.listen(port, async () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
+  const data = await weaviateService.getData()
+  console.log(data)
 });
