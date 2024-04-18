@@ -21,6 +21,10 @@ app.get("/getData", async (req, res) => {
   res.send(data);
 });
 
+app.get("/", async (req, res) => {
+  res.send("I'm alive");
+});
+
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
