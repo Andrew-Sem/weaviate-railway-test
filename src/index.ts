@@ -29,6 +29,7 @@ app.listen(port, async () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
   if (process.env.NODE_ENV === 'production')
     await new Promise(resolve => setTimeout(resolve, 3000));
+  await weaviateService.init()
   const data = await weaviateService.getData()
   console.log(data)
 });
