@@ -31,6 +31,7 @@ export class OldWeaviateService {
 
   constructor(){
     this.client = weaviate.client({
+        scheme: process.env.WEAVIATE_SCHEME,
         host: process.env.WEAVIATE_HOST ?? "",
         apiKey: new ApiKey(process.env.WEAVIATE_API_KEY!)
       });
