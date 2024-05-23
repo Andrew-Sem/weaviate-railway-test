@@ -1,4 +1,3 @@
-import OpenAI from "openai";
 import weaviate, { WeaviateClient } from "weaviate-client";
 
 type Todo = {
