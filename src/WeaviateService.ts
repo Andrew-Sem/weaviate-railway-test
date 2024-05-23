@@ -40,6 +40,8 @@ export class WeaviateService {
   }
 
   async init() {
+    if (process.env.NODE_ENV === 'production')
+      await new Promise(resolve => setTimeout(resolve, 3000));
     const todosCollection = await (
       await this.getWeaviateClient()
     ).collections.create({
